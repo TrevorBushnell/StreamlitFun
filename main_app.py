@@ -1,30 +1,40 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import utils
+import matplotlib.pyplot as plt
 
-'''
 
-'''
 st.write("""
-# My First Streamlit Webpage
+# This Is Our First Streamlit App
 
-And then here is some more text. Here is a live update!
+Here is our first line of text in our Streamlit app!
 """)
 
 df = pd.read_csv('./data.csv')
-st.write(df)
+df = utils.clean_dataframe(df)
+df
 
-options = st.selectbox('Which option do you want:', ['show plotting feature', 'show slider feature'])
+chart_data = pd.DataFrame(
+    np.random.randn(20,3),
+    columns=['a', 'b', 'c']
+)
 
-if options == 'show plotting feature':
+options = st.selectbox('choose what feature you want to display!', ['graphing feature', 'textbox feature', 'slider feature', 'matplotlib feature'])
+st.write(options)
 
-    if st.checkbox('Show plotting feature:'):
-        sample_df = pd.DataFrame(
-            np.random.randn(10,3),
-            columns=['a','b','c']
-        )
-        st.line_chart(sample_df)
+if options == 'graphing feature':
+    st.line_chart(chart_data)
 
-elif options == 'show slider feature':  
+elif options == 'slider feature':
     x = st.slider('x')
     st.write('2 times x is', 2*x)
+
+elif options == 'textbox feature':
+    text_input = st.text_input('type your name here')
+    st.write(text_input)
+
+elif options == 'matplotlib feature':
+    fig, ax = plt.subplots()
+    ax.scatter([1, 2, 3], [1, 2, 3])
+    st.pyplot(fig)
